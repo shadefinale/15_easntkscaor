@@ -1,12 +1,13 @@
 var JC = JC || {};
 
+// There is no use of the model from the view now.
 JC.view = (function(){
 
   var $scoreSpan;
 
-  var init = function(){
+  var init = function(boardSize){
     cacheElements();
-    fillClickZone();
+    fillClickZone(boardSize);
   }
 
   var cacheElements = function(){
@@ -18,17 +19,18 @@ JC.view = (function(){
   }
 
   // These three function put the board on the page.
-
-  var fillClickZone = function(){
-    for (var i = 0; i < 4; i++) {
-      addRowToClickZone(i);
+  // Edited to work with a passed in board size.
+  var fillClickZone = function(boardSize){
+    $("#click-zone").empty();
+    for (var i = 0; i < boardSize; i++) {
+      addRowToClickZone(i, boardSize);
     }
   }
 
-  var addRowToClickZone = function( y ){
+  var addRowToClickZone = function( y, boardSize){
     $row = $( "<div class='row'></div>" )
     $( '#click-zone' ).append( $row )
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < boardSize; i++) {
       addClickerToRow( $row, i, y )
     }
   }
