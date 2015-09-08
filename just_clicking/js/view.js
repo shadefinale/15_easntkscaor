@@ -1,45 +1,54 @@
 var JC = JC || {};
 
-JC.view = {
+JC.view = (function(){
 
-  init: function(){
-          this.fillClickZone();
-          this.attachListeners();
-        },
+  var $scoreSpan;
+
+  var init = function(){
+    cacheElements();
+    fillClickZone();
+  }
+
+  var cacheElements = function(){
+    $scoreSpan = $scoreSpan || $("#score");
+  }
+
+  var drawScore = function(score){
+    $scoreSpan.text(score);
+  }
 
   // These three function put the board on the page.
 
-  fillClickZone: function(){
-                   for (var i = 0; i < 4; i++) {
-                     this.addRowToClickZone(i);
-                   }
-                 },
+  var fillClickZone = function(){
+    for (var i = 0; i < 4; i++) {
+      addRowToClickZone(i);
+    }
+  }
 
-  addRowToClickZone: function( y ){
-                       $row = $( "<div class='row'></div>" )
-                       $( '#click-zone' ).append( $row )
-                       for (var i = 0; i < 4; i++) {
-                         this.addClickerToRow( $row, i, y )
-                       }
-                     },
+  var addRowToClickZone = function( y ){
+    $row = $( "<div class='row'></div>" )
+    $( '#click-zone' ).append( $row )
+    for (var i = 0; i < 4; i++) {
+      addClickerToRow( $row, i, y )
+    }
+  }
 
-  addClickerToRow: function( row, x, y ){
-                     row.append( "<div class='clicker' data-x='" + x + "' data-y='" + y + "'></div>" )
-                   },
+  var addClickerToRow = function( row, x, y ){
+    row.append( "<div class='clicker' data-x='" + x + "' data-y='" + y + "'></div>" )
+  }
 
   // This sets up the click listener on each square.
 
-  attachListeners: function(){
-                     $( ".clicker" ).click( function(){
-                       var $square = $( this )
-                       $square.removeClass( "lit" );
-                       JC.model.scoreClick($square.data().x, $square.data().y);
-                   })},
-
   // This turns a square red.
 
-  lightUpSquare: function( square ){
-                   var $square = $( ".clicker[data-x='" + square.x + "'][data-y='" + square.y + "']" );
-                   $square.addClass( "lit" );
-                 }
-};
+  var lightUpSquare = function( square ){
+    var $square = $( ".clicker[data-x='" + square.x + "'][data-y='" + square.y + "']" );
+    $square.addClass( "lit" );
+  }
+
+  return {
+    init: init,
+    drawScore: drawScore,
+    lightUpSquare: lightUpSquare,
+  };
+})();
